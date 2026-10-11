@@ -1,0 +1,44 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Python virtual environments
+backend/.venv/
+backend/venv/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Django local files
+backend/db.sqlite3
+backend/media/
+staticfiles/
+
+# Node.js dependencies
+node_modules/
+frontend/node_modules/
+
+# Frontend build and test output
+frontend/dist/
+frontend/coverage/
+coverage/
+playwright-report/
+test-results/
+
+# Local editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
