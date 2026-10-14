@@ -1,6 +1,6 @@
 import { Activity, CalendarDays, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import StatCard from "@/components/dashboard/StatCard";
 const summaryCards = [
   {
     title: "Total Patients",
@@ -44,29 +44,16 @@ function DashboardPage() {
         aria-label="Hospital summary"
         className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3"
       >
-        {summaryCards.map(({ title, value, description, icon: Icon }) => (
-          <article
+        {summaryCards.map(({ title, value, description, icon }) => (
+          <StatCard
             key={title}
-            className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm font-medium text-neutral-500">{title}</p>
-                <p className="mt-2 text-3xl font-bold text-neutral-900">
-                  {value}
-                </p>
-              </div>
-
-              <div className="rounded-lg bg-blue-50 p-3 text-blue-700">
-                <Icon size={22} />
-              </div>
-            </div>
-
-            <p className="mt-4 text-sm text-neutral-500">{description}</p>
-          </article>
+            title={title}
+            value={value}
+            description={description}
+            icon={icon}
+          />
         ))}
       </section>
-
       <section className="rounded-xl border border-neutral-200 bg-white p-6">
         <h2 className="text-lg font-semibold text-neutral-900">
           Getting started
