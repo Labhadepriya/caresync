@@ -3,6 +3,7 @@ import MainLayout from "@/layouts/MainLayout";
 import DashboardPage from "@/pages/DashboardPage";
 import PatientsPage from "@/pages/PatientsPage";
 import AppointmentsPage from "@/pages/AppointmentsPage";
+import DiagnosticsPage from "@/pages/DiagnosticsPage";
 
 function PlaceholderPage({ title }: { title: string }) {
   return (
@@ -23,10 +24,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/patients" element={<PatientsPage />} />
         <Route path="/appointments" element={<AppointmentsPage />} />
-        <Route
-          path="/diagnostics"
-          element={<PlaceholderPage title="Diagnostics" />}
-        />
+        <Route path="/diagnostics" element={<DiagnosticsPage />} />
         <Route
           path="/messages"
           element={<PlaceholderPage title="Messages" />}
