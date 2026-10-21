@@ -7,14 +7,15 @@ import {
   Settings,
   Users,
 } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const navigationItems = [
-  { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Patients", icon: Users },
-  { label: "Appointments", icon: CalendarDays },
-  { label: "Diagnostics", icon: ClipboardList },
-  { label: "Messages", icon: MessageSquare },
-  { label: "Settings", icon: Settings },
+  { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+  { label: "Patients", path: "/patients", icon: Users },
+  { label: "Appointments", path: "/appointments", icon: CalendarDays },
+  { label: "Diagnostics", path: "/diagnostics", icon: ClipboardList },
+  { label: "Messages", path: "/messages", icon: MessageSquare },
+  { label: "Settings", path: "/settings", icon: Settings },
 ];
 
 function Sidebar() {
@@ -32,19 +33,21 @@ function Sidebar() {
       </div>
 
       <nav aria-label="Main navigation" className="flex-1 space-y-1 p-4">
-        {navigationItems.map(({ label, icon: Icon }, index) => (
-          <button
-            key={label}
-            type="button"
-            className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-              index === 0
-                ? "bg-blue-50 text-blue-700"
-                : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
-            }`}
+        {navigationItems.map(({ label, path, icon: Icon }) => (
+          <NavLink
+            key={path}
+            to={path}
+            className={({ isActive }) =>
+              `flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                isActive
+                  ? "bg-blue-50 text-blue-700"
+                  : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900"
+              }`
+            }
           >
             <Icon size={19} />
             <span>{label}</span>
-          </button>
+          </NavLink>
         ))}
       </nav>
 
