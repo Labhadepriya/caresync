@@ -4,7 +4,7 @@ import DashboardPage from "@/pages/DashboardPage";
 import PatientsPage from "@/pages/PatientsPage";
 import AppointmentsPage from "@/pages/AppointmentsPage";
 import DiagnosticsPage from "@/pages/DiagnosticsPage";
-
+import MessagesPage from "@/pages/MessagesPage";
 function PlaceholderPage({ title }: { title: string }) {
   return (
     <section className="rounded-xl border border-neutral-200 bg-white p-6">
@@ -25,10 +25,7 @@ function App() {
         <Route path="/patients" element={<PatientsPage />} />
         <Route path="/appointments" element={<AppointmentsPage />} />
         <Route path="/diagnostics" element={<DiagnosticsPage />} />
-        <Route
-          path="/messages"
-          element={<PlaceholderPage title="Messages" />}
-        />
+        <Route path="/messages" element={<MessagesPage />} />
         <Route
           path="/settings"
           element={<PlaceholderPage title="Settings" />}
