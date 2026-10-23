@@ -5,6 +5,7 @@ import { mockPatients } from "@/data/mockPatients";
 import type { Patient, PatientStatus } from "@/data/mockPatients";
 
 type StatusFilter = "All" | PatientStatus;
+type GenderFilter = "All" | Patient["gender"];
 
 interface PatientForm {
   name: string;
@@ -28,6 +29,7 @@ function PatientsPage() {
   const [patients, setPatients] = useState<Patient[]>(mockPatients);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("All");
+  const [genderFilter, setGenderFilter] = useState<GenderFilter>("All");
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<PatientForm>(emptyForm);
 
@@ -44,14 +46,19 @@ function PatientsPage() {
         patient.name,
         patient.email,
         patient.phone,
+        patient.bloodGroup,
+        patient.gender,
       ].some((value) => value.toLowerCase().includes(query));
 
       const matchesStatus =
         statusFilter === "All" || patient.status === statusFilter;
 
-      return matchesSearch && matchesStatus;
+      const matchesGender =
+        genderFilter === "All" || patient.gender === genderFilter;
+
+      return matchesSearch && matchesStatus && matchesGender;
     });
-  }, [patients, search, statusFilter]);
+  }, [patients, search, statusFilter, genderFilter]);
 
   function handleAddPatient(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -71,6 +78,7 @@ function PatientsPage() {
     setPatients((current) => [newPatient, ...current]);
     setSearch("");
     setStatusFilter("All");
+    setGenderFilter("All");
     setForm(emptyForm);
     setShowForm(false);
   }
@@ -287,6 +295,24 @@ function PatientsPage() {
                 }`}
               >
                 {status}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-2" aria-label="Filter by gender">
+            {(["All", "Female", "Male", "Other"] as const).map((gender) => (
+              <button
+                key={gender}
+                type="button"
+                onClick={() => setGenderFilter(gender)}
+                aria-pressed={genderFilter === gender}
+                className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  genderFilter === gender
+                    ? "bg-blue-600 text-white"
+                    : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+                }`}
+              >
+                {gender}
               </button>
             ))}
           </div>
