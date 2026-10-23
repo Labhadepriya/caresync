@@ -5,16 +5,7 @@ import PatientsPage from "@/pages/PatientsPage";
 import AppointmentsPage from "@/pages/AppointmentsPage";
 import DiagnosticsPage from "@/pages/DiagnosticsPage";
 import MessagesPage from "@/pages/MessagesPage";
-function PlaceholderPage({ title }: { title: string }) {
-  return (
-    <section className="rounded-xl border border-neutral-200 bg-white p-6">
-      <h1 className="text-2xl font-bold text-neutral-900">{title}</h1>
-      <p className="mt-2 text-sm text-neutral-600">
-        This page will be implemented in a future CareSync frontend task.
-      </p>
-    </section>
-  );
-}
+import SettingsPage from "@/pages/SettingsPage";
 
 function App() {
   return (
@@ -26,10 +17,8 @@ function App() {
         <Route path="/appointments" element={<AppointmentsPage />} />
         <Route path="/diagnostics" element={<DiagnosticsPage />} />
         <Route path="/messages" element={<MessagesPage />} />
-        <Route
-          path="/settings"
-          element={<PlaceholderPage title="Settings" />}
-        />
+        <Route path="/settings" element={<SettingsPage />} />
+
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </MainLayout>
