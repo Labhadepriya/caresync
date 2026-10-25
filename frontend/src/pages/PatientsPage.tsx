@@ -3,6 +3,7 @@ import { CalendarDays, Mail, Plus, Search, Users, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { mockPatients } from "@/data/mockPatients";
 import type { Patient, PatientStatus } from "@/data/mockPatients";
+import { Link } from "react-router-dom";
 
 type StatusFilter = "All" | PatientStatus;
 type GenderFilter = "All" | Patient["gender"];
@@ -357,9 +358,12 @@ function PatientsPage() {
                           .toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-medium text-neutral-900">
+                        <Link
+                          to={`/patients/${patient.id}`}
+                          className="font-medium text-blue-700 hover:text-blue-900 hover:underline"
+                        >
                           {patient.name}
-                        </p>
+                        </Link>
                         <p className="mt-0.5 text-xs text-neutral-500">
                           {patient.id}
                         </p>
