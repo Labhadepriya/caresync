@@ -6,7 +6,7 @@ import AppointmentsPage from "@/pages/AppointmentsPage";
 import DiagnosticsPage from "@/pages/DiagnosticsPage";
 import MessagesPage from "@/pages/MessagesPage";
 import SettingsPage from "@/pages/SettingsPage";
-
+import PatientDetailsPage from "@/pages/PatientDetailsPage";
 function App() {
   return (
     <MainLayout>
@@ -14,6 +14,7 @@ function App() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/patients" element={<PatientsPage />} />
+        <Route path="/patients/:patientId" element={<PatientDetailsPage />} />
         <Route path="/appointments" element={<AppointmentsPage />} />
         <Route path="/diagnostics" element={<DiagnosticsPage />} />
         <Route path="/messages" element={<MessagesPage />} />
