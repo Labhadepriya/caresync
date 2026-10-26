@@ -63,6 +63,8 @@ function AppointmentsPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("All");
   const [departmentFilter, setDepartmentFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState<"All" | AppointmentType>("All");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<AppointmentForm>(emptyForm);
 
@@ -105,14 +107,31 @@ function AppointmentsPage() {
         const matchesType =
           typeFilter === "All" || appointment.type === typeFilter;
 
+        const matchesStartDate = !startDate || appointment.date >= startDate;
+
+        const matchesEndDate = !endDate || appointment.date <= endDate;
+
         return (
-          matchesSearch && matchesStatus && matchesDepartment && matchesType
+          matchesSearch &&
+          matchesStatus &&
+          matchesDepartment &&
+          matchesType &&
+          matchesStartDate &&
+          matchesEndDate
         );
       })
       .sort((a, b) =>
         `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`),
       );
-  }, [appointments, search, statusFilter, departmentFilter, typeFilter]);
+  }, [
+    appointments,
+    search,
+    statusFilter,
+    departmentFilter,
+    typeFilter,
+    startDate,
+    endDate,
+  ]);
 
   function handleAddAppointment(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -139,6 +158,15 @@ function AppointmentsPage() {
     setStatusFilter("All");
     setForm(emptyForm);
     setShowForm(false);
+  }
+
+  function clearFilters() {
+    setSearch("");
+    setStatusFilter("All");
+    setDepartmentFilter("All");
+    setTypeFilter("All");
+    setStartDate("");
+    setEndDate("");
   }
 
   function updateStatus(id: string, status: AppointmentStatus) {
@@ -384,6 +412,29 @@ function AppointmentsPage() {
           </label>
 
           <div className="flex flex-wrap gap-2">
+            <label className="flex items-center gap-2 text-sm text-neutral-600">
+              <span>From</span>
+              <input
+                type="date"
+                value={startDate}
+                max={endDate || undefined}
+                onChange={(event) => setStartDate(event.target.value)}
+                aria-label="Filter appointments from date"
+                className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm"
+              />
+            </label>
+
+            <label className="flex items-center gap-2 text-sm text-neutral-600">
+              <span>To</span>
+              <input
+                type="date"
+                value={endDate}
+                min={startDate || undefined}
+                onChange={(event) => setEndDate(event.target.value)}
+                aria-label="Filter appointments to date"
+                className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm"
+              />
+            </label>
             <select
               value={departmentFilter}
               onChange={(event) => setDepartmentFilter(event.target.value)}
@@ -431,6 +482,10 @@ function AppointmentsPage() {
                 {status}
               </button>
             ))}
+
+            <Button type="button" variant="outline" onClick={clearFilters}>
+              Clear Filters
+            </Button>
           </div>
         </div>
 
@@ -553,12 +608,25 @@ function AppointmentsPage() {
                       size={28}
                       className="mx-auto mb-3 text-neutral-300"
                     />
+
                     <p className="font-medium text-neutral-700">
                       No appointments found
                     </p>
+
                     <p className="mt-1 text-sm text-neutral-500">
-                      Try another search term or status filter.
+                      Try adjusting your search or filters, including the date
+                      range.
                     </p>
+
+                    <div className="mt-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={clearFilters}
+                      >
+                        Clear all filters
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               )}
