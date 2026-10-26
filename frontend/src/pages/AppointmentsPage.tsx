@@ -61,6 +61,8 @@ function AppointmentsPage() {
     useState<Appointment[]>(mockAppointments);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("All");
+  const [departmentFilter, setDepartmentFilter] = useState("All");
+  const [typeFilter, setTypeFilter] = useState<"All" | AppointmentType>("All");
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState<AppointmentForm>(emptyForm);
 
@@ -71,6 +73,14 @@ function AppointmentsPage() {
   const completedCount = appointments.filter(
     (appointment) => appointment.status === "Completed",
   ).length;
+
+  const departments = [
+    ...new Set(mockAppointments.map((appointment) => appointment.department)),
+  ].sort();
+
+  const appointmentTypes = [
+    ...new Set(mockAppointments.map((appointment) => appointment.type)),
+  ].sort();
 
   const filteredAppointments = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -88,12 +98,21 @@ function AppointmentsPage() {
         const matchesStatus =
           statusFilter === "All" || appointment.status === statusFilter;
 
-        return matchesSearch && matchesStatus;
+        const matchesDepartment =
+          departmentFilter === "All" ||
+          appointment.department === departmentFilter;
+
+        const matchesType =
+          typeFilter === "All" || appointment.type === typeFilter;
+
+        return (
+          matchesSearch && matchesStatus && matchesDepartment && matchesType
+        );
       })
       .sort((a, b) =>
         `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`),
       );
-  }, [appointments, search, statusFilter]);
+  }, [appointments, search, statusFilter, departmentFilter, typeFilter]);
 
   function handleAddAppointment(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -363,6 +382,38 @@ function AppointmentsPage() {
               className="w-full bg-transparent text-sm outline-none placeholder:text-neutral-400"
             />
           </label>
+
+          <div className="flex flex-wrap gap-2">
+            <select
+              value={departmentFilter}
+              onChange={(event) => setDepartmentFilter(event.target.value)}
+              aria-label="Filter by department"
+              className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm"
+            >
+              <option value="All">All Departments</option>
+              {departments.map((department) => (
+                <option key={department} value={department}>
+                  {department}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={typeFilter}
+              onChange={(event) =>
+                setTypeFilter(event.target.value as "All" | AppointmentType)
+              }
+              aria-label="Filter by appointment type"
+              className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm"
+            >
+              <option value="All">All Types</option>
+              {appointmentTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
 
           <div className="flex flex-wrap gap-2" aria-label="Filter by status">
             {(["All", ...statusOptions] as const).map((status) => (
