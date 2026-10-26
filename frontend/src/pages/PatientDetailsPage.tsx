@@ -1,11 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, CalendarDays, Mail, Phone, UserRound } from "lucide-react";
-import { mockPatients } from "@/data/mockPatients";
+import { usePatients } from "@/contexts/usePatients";
 
 function PatientDetailsPage() {
   const { patientId } = useParams<{ patientId: string }>();
-
-  const patient = mockPatients.find((item) => item.id === patientId);
+  const { patients } = usePatients();
+  const patient = patients.find((item) => item.id === patientId);
 
   return (
     <div className="space-y-6">

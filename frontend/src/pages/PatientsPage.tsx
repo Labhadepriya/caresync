@@ -1,10 +1,9 @@
 import { useMemo, useState } from "react";
 import { CalendarDays, Mail, Plus, Search, Users, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { mockPatients } from "@/data/mockPatients";
 import type { Patient, PatientStatus } from "@/data/mockPatients";
 import { Link } from "react-router-dom";
-
+import { usePatients } from "@/contexts/usePatients";
 type StatusFilter = "All" | PatientStatus;
 type GenderFilter = "All" | Patient["gender"];
 
@@ -27,7 +26,7 @@ const emptyForm: PatientForm = {
 };
 
 function PatientsPage() {
-  const [patients, setPatients] = useState<Patient[]>(mockPatients);
+  const { patients, addPatient } = usePatients();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("All");
   const [genderFilter, setGenderFilter] = useState<GenderFilter>("All");
@@ -76,7 +75,7 @@ function PatientsPage() {
       status: "Active",
     };
 
-    setPatients((current) => [newPatient, ...current]);
+    addPatient(newPatient);
     setSearch("");
     setStatusFilter("All");
     setGenderFilter("All");
