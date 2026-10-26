@@ -34,3 +34,34 @@ class Hospital(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.city}"
+
+
+class Doctor(models.Model):
+    hospital = models.ForeignKey(
+        Hospital,
+        on_delete=models.CASCADE,
+        related_name="doctors"
+    )
+
+    name = models.CharField(max_length=200)
+    specialization = models.CharField(max_length=100)
+    qualification = models.CharField(max_length=200)
+    experience_years = models.PositiveIntegerField(default=0)
+
+    phone = models.CharField(max_length=20)
+    email = models.EmailField(blank=True)
+
+    consultation_fee = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+
+    is_available = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Dr. {self.name} - {self.specialization}"

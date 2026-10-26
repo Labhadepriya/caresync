@@ -2,8 +2,8 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from math import radians, sin, cos, sqrt, atan2
-from .models import Hospital
-from .serializers import HospitalSerializer
+from .models import Hospital, Doctor
+from .serializers import HospitalSerializer, DoctorSerializer
 
 
 class HospitalListCreateAPIView(generics.ListCreateAPIView):
@@ -28,6 +28,36 @@ class HospitalListCreateAPIView(generics.ListCreateAPIView):
             )
 
         return queryset
+
+class DoctorListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = DoctorSerializer
+
+    def get_queryset(self):
+        queryset = Doctor.objects.all()
+
+        hospital = self.request.query_params.get("hospital")
+        specialization = self.request.query_params.get("specialization")
+        available = self.request.query_params.get("is_available")
+
+        if hospital:
+            queryset = queryset.filter(hospital_id=hospital)
+
+        if specialization:
+            queryset = queryset.filter(
+                specialization__icontains=specialization
+            )
+
+        if available:
+            queryset = queryset.filter(
+                is_available=available.lower() == "true"
+            )
+
+        return queryset
+
+class DoctorDetailAPIView(generics.RetrieveUpdateAPIView):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+    http_method_names = ["get", "put", "patch", "head", "options"]
 
 
 class HospitalDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
